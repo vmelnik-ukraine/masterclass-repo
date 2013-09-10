@@ -1,14 +1,12 @@
 <?php
 
 return array(
-
     'database' => array(
         'user' => '',
         'pass' => '',
         'host' => '',
         'name' => '',
     ),
-    
     'routes' => array(
         '' => 'index/index',
         'story' => 'story/index',

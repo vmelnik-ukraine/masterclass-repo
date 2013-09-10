@@ -35,7 +35,7 @@ class Index {
         }
         
         $content .= '</ol>';
-        
-        require 'layout.phtml';
+
+        require_once __DIR__ . '/../View/layout.phtml';
     }
 }

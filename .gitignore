@@ -1,0 +1,5 @@
+# Configs
+config/main.php
+
+# Third party libraries/modules
+vendor/*
