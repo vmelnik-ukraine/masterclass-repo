@@ -1,5 +1,7 @@
 <?php
 
+namespace VMelnik\Framework\Controller;
+
 class MasterController {
     
     private $config;
@@ -10,9 +12,8 @@ class MasterController {
     
     public function execute() {
         $call = $this->_determineControllers();
-        $call_class = $call['call'];
-        $class = ucfirst(array_shift($call_class));
-        $method = array_shift($call_class);
+        $class = $call['controller'];
+        $method = $call['action'];
         $o = new $class($this->config);
         return $o->$method();
     }
@@ -35,10 +36,10 @@ class MasterController {
             if(preg_match($pattern, $path, $matches))
             {
                 $controller_details = $v;
-                $path_string = array_shift($matches);
-                $arguments = $matches;
-                $controller_method = explode('/', $controller_details);
-                $return = array('call' => $controller_method);
+                $return = array(
+                    'controller' => $controller_details[0],
+                    'action' => $controller_details[1],
+                );
             }
         }
         
