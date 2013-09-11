@@ -1,6 +1,6 @@
 <?php
 
-namespace VMelnik\Upvote\Model;
+namespace VMelnik\Upvote\Controller;
 
 class Story {
     
