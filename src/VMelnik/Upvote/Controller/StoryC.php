@@ -2,17 +2,10 @@
 
 namespace VMelnik\Upvote\Controller;
 
-use VMelnik\Upvote\Model;
+use VMelnik\Framework\Controller\BaseC;
 
-class Story
+class StoryC extends BaseC
 {
-
-    protected $config;
-
-    public function __construct($config)
-    {
-        $this->config = $config;
-    }
 
     public function index()
     {
@@ -22,15 +15,13 @@ class Story
         }
 
         $storyId = $_GET['id'];
-        $storyModel = new Model\Story($this->config);
-        $story = $storyModel->getOne($storyId);
+        $story = $this->get('story.m')->getOne($storyId);
         if (!$story) {
             header("Location: /");
             exit;
         }
 
-        $commentModel = new Model\Comment($this->config);
-        $comments = $commentModel->getComments($storyId);
+        $comments = $this->get('comment.m')->getComments($storyId);
         $commentsCount = count($comments);
         $isAuthenticated = $_SESSION['AUTHENTICATED'];
 
@@ -55,8 +46,7 @@ class Story
                     !filter_input(INPUT_POST, 'url', FILTER_VALIDATE_URL)) {
                 $error = 'You did not fill in all the fields or the URL did not validate.';
             } else {
-                $storyModel = new Model\Story($this->config);
-                $id = $storyModel->addStory($_POST['headline'], $_POST['url'], $_SESSION['username']);
+                $id = $this->get('story.m')->addStory($_POST['headline'], $_POST['url'], $_SESSION['username']);
                 header("Location: /story/?id=$id");
                 exit;
             }

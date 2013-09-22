@@ -2,23 +2,35 @@
 
 namespace VMelnik\Framework\Controller;
 
-class MasterController {
+use VMelnik\Framework\DI;
+
+class FrontC {
     
     private $config;
     
     public function __construct($config) {
-        $this->_setupConfig($config);
+        $this->setupConfig($config);
     }
     
     public function execute() {
-        $call = $this->_determineControllers();
-        $class = $call['controller'];
+        $call = $this->determineController();
+        $identifier = $call['controller'];
         $method = $call['action'];
-        $o = new $class($this->config);
+        
+        $dic = new DI\DIC($this->config['dic']);
+        
+        try {
+            $o = $dic->get($identifier);
+        } catch (DI\UnregisteredIdentifierE $e) {
+            // log error. show 404?
+            exit('404 Page doesn\'t exist');
+        }
+        
+        
         return $o->$method();
     }
     
-    private function _determineControllers()
+    protected function determineController()
     {
         if (isset($_SERVER['REDIRECT_BASE'])) {
             $rb = $_SERVER['REDIRECT_BASE'];
@@ -46,7 +58,7 @@ class MasterController {
         return $return;
     }
     
-    private function _setupConfig($config) {
+    protected function setupConfig($config) {
         $this->config = $config;
     }
     

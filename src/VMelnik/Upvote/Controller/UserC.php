@@ -2,17 +2,10 @@
 
 namespace VMelnik\Upvote\Controller;
 
-use VMelnik\Upvote\Model;
+use VMelnik\Framework\Controller\BaseC;
 
-class User
+class UserC extends BaseC
 {
-
-    protected $config;
-
-    public function __construct($config)
-    {
-        $this->config = $config;
-    }
 
     public function create()
     {
@@ -39,7 +32,7 @@ class User
 
             if (is_null($error)) {
 
-                $userModel = new Model\User($this->config);
+                $userModel = $this->get('user.m');
 
                 if ($userModel->isUserExists($_POST['username'])) {
                     $error = 'Your chosen username already exists. Please choose another.';
@@ -67,7 +60,7 @@ class User
             exit;
         }
 
-        $userModel = new Model\User($this->config);
+        $userModel = $this->get('user.m');
 
         if (isset($_POST['updatepw'])) {
             if (!isset($_POST['password']) || !isset($_POST['password_check']) ||
@@ -96,8 +89,7 @@ class User
         if (isset($_POST['login'])) {
             $username = $_POST['user'];
             $password = $_POST['pass'];
-            $userModel = new Model\User($this->config);
-            if ($userModel->authUser($username, $password)) {
+            if ($this->get('user.m')->authUser($username, $password)) {
                 header("Location: /");
                 exit;
             } else {

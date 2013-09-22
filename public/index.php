@@ -11,5 +11,5 @@ Autoloader::register();
 
 use VMelnik\Framework\Controller;
 
-$framework = new Controller\MasterController($config);
-echo $framework->execute();
+$controller = new Controller\FrontC($config);
+echo $controller->execute();
